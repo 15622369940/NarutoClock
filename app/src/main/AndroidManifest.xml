@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.xiaotian.fang.narutoclock" >
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,6 +22,52 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--闹钟相关Activity注册-->
+        <activity
+            android:name=".AlarmActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.xiaotian.fang.preference.AlarmPreferencesActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".AlarmActivity" >
+            <!-- Parent activity meta-data to support API level 7+ -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AlarmActivity" />
+        </activity>
+
+        <service
+            android:process="za.co.neilson.alarm.serviceProcess"
+            android:name="com.xiaotian.fang.service.AlarmService"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            >
+        </service>
+        <receiver android:name="com.xiaotian.fang.service.AlarmServiceBroadcastReciever" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name = "com.xiaotian.fang.alert.AlarmAlertActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <receiver android:name="com.xiaotian.fang.alert.AlarmAlertBroadcastReciever" >
+        </receiver>
+        <receiver android:name = "com.xiaotian.fang.telephone.PhoneStateChangedBroadcastReciever">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
